@@ -171,19 +171,19 @@ nano ./bashrc
 
 Paste the link that we copied somewhere in the ```bashrc``` file.
 
-If we save our ```./bashrc``` file, we are ready to create our first project. In order to create a new project, you got to write down the keyword symfony, followed with the keyword new, followed with the folder name. In our case, let’s call it ```movies```. Be aware that this will be your project name.
+If we save our ```./bashrc``` file, we are ready to create our first project. In order to create a new project, you got to write down the keyword symfony, followed with the keyword new, followed with the folder name. In our case, let’s call it ```dashboard```. Be aware that this will be your project name.
 ```
-symfony new movies
+symfony new dashboard
 ```
 
 You have the option to pass in a ```--full``` flag which will install all packages that you need to build web application, be aware that the size of your project will be a lot bigger.
 ```
-symfony new movies --full
+symfony new dashboard --full
 ```
 
-You also have the option to change up your version number as well. If you perform the ```symfony new movies``` command, Symfony will always pull in a project with the most up to date version number. You can change this up by adding a ```--version={VERSION_NUMBER}``` flag to it.
+You also have the option to change up your version number as well. If you perform the ```symfony new dashboard``` command, Symfony will always pull in a project with the most up to date version number. You can change this up by adding a ```--version={VERSION_NUMBER}``` flag to it.
 ```
-symfony new movies –version=4.0
+symfony new dashboard –version=4.0
 ```
 
 This command will install a Symfony project with a version number of 4.0.
@@ -191,13 +191,13 @@ This command will install a Symfony project with a version number of 4.0.
 ### **Composer installer** <br>
 The second method is to install Symfony through Composer. Make sure that you have Composer installed on your local machine before you perform the following command, otherwise it won’t recognize the keyword ```composer```. Inside the CLI, you need to perform the following command:
 ```
-composer create-project symfony/skeleton movies
+composer create-project symfony/skeleton dashboard
 ```
 
 ### **Check if settings are OK** <br>
 Like I’ve mentioned at the beginning of this repository, you need PHP 7.2.5 or higher installed on your local machine. In order to perform the command, we got to make sure that we are inside the Symfony folder that we just created. Let’s change directories.
 ```
-cd movies
+cd dashboard
 ```
 
 If you’re not sure if you got that installed, you can run the following command to see if your local machine meets the requirements.
@@ -260,7 +260,7 @@ I personally think that the following extensions are Must-Haves when working wit
 
 ## 6. Project structure
 
-If we open our project in any code editor, you can see a very thin project because we pulled in **Symfony’s skeleton**. These are all added in the root directory called ```movies```. The Symfony Skeletion doesn't add many dependencies, but only the components that are needed to run a Symfony project in the browser.
+If we open our project in any code editor, you can see a very thin project because we pulled in **Symfony’s skeleton**. These are all added in the root directory called ```dashboard```. The Symfony Skeletion doesn't add many dependencies, but only the components that are needed to run a Symfony project in the browser.
 
 | **Name**       | **Explanation** |
 | -------------  |-------------|
@@ -304,10 +304,10 @@ composer require doctrine maker
 
 With Doctrine maker, we can create a controller (and more) with the following command:
 ```
-symfony console make:controller MoviesController
+symfony console make:controller dashboardController
 ```
 
-The last param will be the name of your class and file. In our case, it will be ```MoviesController```. The output will be a ```success``` message with the path of our Controller. In our case, it will be stored in the ```src/Controller/``` folder where a file has been added with the name of ```MoviesController.php```. 
+The last param will be the name of your class and file. In our case, it will be ```dashboardController```. The output will be a ```success``` message with the path of our Controller. In our case, it will be stored in the ```src/Controller/``` folder where a file has been added with the name of ```dashboardController.php```. 
 
 **Quick note**, keep in mind that the file name needs to be equal to the class name, otherwise you’ll run into some errors.
 
@@ -320,31 +320,31 @@ use Symfony\Component\Routing\Annotation\Route;
 
 The class we created extends the AbstractController, which is needed to return something.
 ```ruby
-class MoviesController extends AbstractController
+class dashboardController extends AbstractController
 ```
 
-The real magic of our application will happen inside the ```MoviesController``` class, since we’re going to create routes and methods in here.
+The real magic of our application will happen inside the ```dashboardController``` class, since we’re going to create routes and methods in here.
 
 Right above our ```index()``` method, you’ll see something which might look like a comment, but it’s actually a route as an attribute that will define the route for the method mentioned right below it. 
 
-The first parameter will be the endpoint that you need to add inside the URL. In our case, it will be ```/movies```. The name is an optional parameter, which will define the name of our endpoint. 
+The first parameter will be the endpoint that you need to add inside the URL. In our case, it will be ```/dashboard```. The name is an optional parameter, which will define the name of our endpoint. 
 
 ```ruby
-#[Route('/movies', name: 'movies')]
+#[Route('/dashboard', name: 'dashboard')]
 ```
 
-If we navigate to the browser and change our endpoint to ```127.0.0.1:8000/movies```, you will see the JSON response that was automatically added inside the ```index()``` method.
+If we navigate to the browser and change our endpoint to ```127.0.0.1:8000/dashboard```, you will see the JSON response that was automatically added inside the ```index()``` method.
 
 ### What will happen if the endpoint does not exist?
-This is a pretty interesting question since it will definitely happen that you hit the wrong endpoint. Let’s change our endpoint from ```/movies``` to ```/movie```.
+This is a pretty interesting question since it will definitely happen that you hit the wrong endpoint. Let’s change our endpoint from ```/dashboard``` to ```/movie```.
 
 ```ruby
-#[Route('/movie', name: 'movies')]
+#[Route('/movie', name: 'dashboard')]
 ```
 
-Let’s refresh the ```127.0.0.1:8000/movies``` endpoint we got open inside the browser, and you can see that we’ve been hit with the following message:
+Let’s refresh the ```127.0.0.1:8000/dashboard``` endpoint we got open inside the browser, and you can see that we’ve been hit with the following message:
 ```
-No route found for “GET http://127.0.0.:8000/movies”
+No route found for “GET http://127.0.0.:8000/dashboard”
 ```
 
 Finally, our first error message. This error message appears because the endpoint does not exist.
@@ -355,7 +355,7 @@ If you are using an older PHP version or even maybe a better version in the futu
 Annotation methods used to look like this:
 ```ruby
 /**
- * @Route("/movies", name="movies")
+ * @Route("/dashboard", name="dashboard")
 */
 public function index(): Response {
 
@@ -377,11 +377,11 @@ What this piece of code will do is creating a route from the controller action m
 
 ## 8. Route Parameters
 
-One of the most common things in Symfony (and any other framework/programming language) are routes with parameters. In the previous chapter, we defined a basic route to ```/movies```. If we take a look at all the HTTP methods down below, you can see that this route should eventually get all available movies in the database.
+One of the most common things in Symfony (and any other framework/programming language) are routes with parameters. In the previous chapter, we defined a basic route to ```/dashboard```. If we take a look at all the HTTP methods down below, you can see that this route should eventually get all available dashboard in the database.
 
 What if you want to show one specific movie to a user? Let’s say that we have a movie in our database/list with the name of Inception, do you want do define your route for every single movie as shown below?
 ```ruby
-#[Route('/movies/inception', name: 'movies')]
+#[Route('/dashboard/inception', name: 'dashboard')]
 ```
 
 Well, the answer is no… here’s when you can use route parameters. It’s basically a route that has a parameter inside the URL structure, which will be a variable. Since it’s a variable, we have the opportunity to change it based on the names we got inside our database.
@@ -389,12 +389,12 @@ Well, the answer is no… here’s when you can use route parameters. It’s bas
 In order to define a route parameter, you need to wrap your variable inside curly braces right after the actual endpoint. 
 
 ```ruby
-#[Route('/movies/{name}, name: 'movies')]
+#[Route('/dashboard/{name}, name: 'dashboard')]
 ```
 
 Be aware that we’re going to pass in the name of a specific movie, but a variable that will represent that specific movie. Once again, this can be an id, name or slug.
 
-If we navigate to the browser and change our endpoint to ```127.0.0.1:8000/movies/inception```, you can indeed see that this works fine.
+If we navigate to the browser and change our endpoint to ```127.0.0.1:8000/dashboard/inception```, you can indeed see that this works fine.
 
 When working on large web applications, you will probably use tons of endpoints to showcase pages to users. There’s a command in Symfony which will show you all routes that are available in your project.
 ```
@@ -403,20 +403,20 @@ symfony console debug:router
 
 Next to the name parameter inside the route, you can add the HTTP verb you want to perform on your route.
 ```ruby
-#[Route('/movie', name: 'movies', methods:[‘GET’, ‘HEAD’)]
+#[Route('/movie', name: 'dashboard', methods:[‘GET’, ‘HEAD’)]
 ```
 
 ### Available HTTP methods on a resource
 
 | **Verb**        | **Path**           | **Action**  | **Route Name**        | **Description**   |
 | ------------- |-------------| -----| ------------- |-------------|
-| GET         | /movies | index | movies.index | Get all movies |
-| GET         | /movies/create | create | movies.create | Get new created movies |
-| POST         | /movies | store | movies.store | Create a new movie |
-| GET         | /movies/{movie} | show | movies.show | Get data of specific movie |
-| GET         | /movies/{movie}/edit | edit | movies.edit | Edit specific movie |
-| PUT/PATCH         | /movies/{movie} | update | movies.update | Update a specific movies |
-| DELETE         | /movies{delete} | destroy | movies.destroy | Delete a specific movie |
+| GET         | /dashboard | index | dashboard.index | Get all dashboard |
+| GET         | /dashboard/create | create | dashboard.create | Get new created dashboard |
+| POST         | /dashboard | store | dashboard.store | Create a new movie |
+| GET         | /dashboard/{movie} | show | dashboard.show | Get data of specific movie |
+| GET         | /dashboard/{movie}/edit | edit | dashboard.edit | Edit specific movie |
+| PUT/PATCH         | /dashboard/{movie} | update | dashboard.update | Update a specific dashboard |
+| DELETE         | /dashboard{delete} | destroy | dashboard.destroy | Delete a specific movie |
 
 ## 9. Views
 
@@ -428,7 +428,7 @@ Views will be shown based on a method in the controller. By default, your ```ind
 
 In order to show a view from the controller, you need to return the ```render()``` method. 
 ```ruby
-#[Route('/movies', name: 'movies')]
+#[Route('/dashboard', name: 'dashboard')]
 public function index(): Response
 {
     return $this->render();
@@ -448,19 +448,19 @@ This obviously won’t work immediately, because remember, we do need to pass in
 
 Keep in mind that you don’t need to define the ```/templates``` folder inside the ```render()``` method because it knows that it needs to look inside the templates folder.
 ```ruby
-#[Route('/movies', name: 'movies')]
+#[Route('/dashboard', name: 'dashboard')]
 public function index(): Response
 {
     return $this->render('index.html.twig');
 }
 ```
 
-If we refresh our ```127.0.0.1:8000/movies``` endpoint, you’ll see the ```h1``` printed out.
+If we refresh our ```127.0.0.1:8000/dashboard``` endpoint, you’ll see the ```h1``` printed out.
 
 ### Optional parameters in the render method
 The ```render()``` method accepts another parameter which is optional. Later on, we’ll learn how to interact with the database inside the controller. Obviously, you need to send something back to the view. To do this, we can add a comma after our first parameter (which is the view name), then we’re going to return an array straight into the view.
 ```ruby
-#[Route('/movies', name: 'movies')]
+#[Route('/dashboard', name: 'dashboard')]
 public function index(): Response
 {
     return $this->render('index.html.twig', [
@@ -485,7 +485,7 @@ A pretty cool feature in Symfony is the ```dump()``` method, which is a function
 </h1>
 ```
 
-If we refresh our ```127.0.0.1:8000/movies``` endpoint, you can see that the data type of our ```title``` is a string.
+If we refresh our ```127.0.0.1:8000/dashboard``` endpoint, you can see that the data type of our ```title``` is a string.
 
 ## 8. Twig layout explained
 
@@ -546,22 +546,22 @@ An example might be the following, where we extend the body block.
 
 Before we can loop over values inside our twig, we do need to create an array inside the controller that we pass to the view.
 ```ruby
-#[Route('/movie', name: 'movies')]
+#[Route('/movie', name: 'dashboard')]
 public function index(): Response
 {
-    $movies = [ 'Avengers: Endgame', 'Inception' , 'Loki', 'Black Widow'];
+    $dashboard = [ 'Avengers: Endgame', 'Inception' , 'Loki', 'Black Widow'];
 
     return $this->render('index.html.twig', array(
-        'movies' => $movies
+        'dashboard' => $dashboard
     ));
 }
 ```
 
-Adding ```{{ movies }}``` inside the view won’t work because you can’t print out an array as a string, so we got to make sure that we loop over our array values. 
+Adding ```{{ dashboard }}``` inside the view won’t work because you can’t print out an array as a string, so we got to make sure that we loop over our array values. 
 
 ```ruby
 {% block body %}
-    {% for movie in movies %}
+    {% for movie in dashboard %}
         <li>
             {{ movie }}
         </li>
@@ -569,7 +569,7 @@ Adding ```{{ movies }}``` inside the view won’t work because you can’t print
 {% endblock %}
 ```
 
-If we refresh our ```/movies``` endpoint, you’ll see that all movies have been printed out as a list item. 
+If we refresh our ```/dashboard``` endpoint, you’ll see that all dashboard have been printed out as a list item. 
 
 ### Global variables
 

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Admin;
 use App\Entity\Movie;
 use App\Form\MovieFormType;
 use App\Repository\MovieRepository;
@@ -13,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class MoviesController extends AbstractController
+class DashboardController extends AbstractController
 {
     private $em;
     private $movieRepository;
@@ -23,17 +24,22 @@ class MoviesController extends AbstractController
         $this->movieRepository = $movieRepository;
     }
 
-    #[Route('/movies', name: 'movies')]
+    #[Route('/dashboard', name: 'dashboard')]
     public function index(): Response
     {
-        $movies = $this->movieRepository->findAll();
-
-        return $this->render('movies/index.html.twig', [
-            'movies' => $movies
+        $dashboard = $this->movieRepository->findAll();
+        $user = $this->getUser();
+        $roles = $user->getRoles();
+        $chekisadmin = $user->isSuperAdmin();
+        // dump($user, $roles, $chekisadmin);
+        // die;
+        return $this->render('dashboard/index.html.twig', [
+            'dashboard' => $dashboard,
+            'last_username' => "dd"
         ]);
     }
 
-    #[Route('/movies/create', name: 'create_movie')]
+    #[Route('/dashboard/create', name: 'create_movie')]
     public function create(Request $request): Response
     {
         $movie = new Movie();
@@ -63,15 +69,15 @@ class MoviesController extends AbstractController
             $this->em->persist($newMovie);
             $this->em->flush();
 
-            return $this->redirectToRoute('movies');
+            return $this->redirectToRoute('dashboard');
         }
 
-        return $this->render('movies/create.html.twig', [
+        return $this->render('dashboard/create.html.twig', [
             'form' => $form->createView()
         ]);
     }
 
-    #[Route('/movies/edit/{id}', name: 'edit_movie')]
+    #[Route('/dashboard/edit/{id}', name: 'edit_movie')]
     public function edit($id, Request $request): Response 
     {
         $this->checkLoggedInUser($id);
@@ -104,7 +110,7 @@ class MoviesController extends AbstractController
                     $movie->setImagePath('/uploads/' . $newFileName);
                     $this->em->flush();
 
-                    return $this->redirectToRoute('movies');
+                    return $this->redirectToRoute('dashboard');
                 }
             } else {
                 $movie->setTitle($form->get('title')->getData());
@@ -112,17 +118,17 @@ class MoviesController extends AbstractController
                 $movie->setDescription($form->get('description')->getData());
 
                 $this->em->flush();
-                return $this->redirectToRoute('movies');
+                return $this->redirectToRoute('dashboard');
             }
         }
 
-        return $this->render('movies/edit.html.twig', [
+        return $this->render('dashboard/edit.html.twig', [
             'movie' => $movie,
             'form' => $form->createView()
         ]);
     }
 
-    #[Route('/movies/delete/{id}', methods: ['GET', 'DELETE'], name: 'delete_movie')]
+    #[Route('/dashboard/delete/{id}', methods: ['GET', 'DELETE'], name: 'delete_movie')]
     public function delete($id): Response
     {
         $this->checkLoggedInUser($id);
@@ -130,22 +136,22 @@ class MoviesController extends AbstractController
         $this->em->remove($movie);
         $this->em->flush();
 
-        return $this->redirectToRoute('movies');
+        return $this->redirectToRoute('dashboard');
     }
 
-    #[Route('/movies/{id}', methods: ['GET'], name: 'show_movie')]
+    #[Route('/dashboard/{id}', methods: ['GET'], name: 'show_movie')]
     public function show($id): Response
     {
         $movie = $this->movieRepository->find($id);
         
-        return $this->render('movies/show.html.twig', [
+        return $this->render('dashboard/show.html.twig', [
             'movie' => $movie
         ]);
     }
 
     private function checkLoggedInUser($movieId) {
         if($this->getUser() == null || $this->getUser()->getId() !== $movieId) {
-            return $this->redirectToRoute('movies');
+            return $this->redirectToRoute('dashboard');
         }
     }
 }

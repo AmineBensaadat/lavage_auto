@@ -14,6 +14,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class Admin implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -105,5 +107,17 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function isAdmin(): bool
+    {
+        $hasAccess = in_array(self::ROLE_ADMIN, $this->getRoles());
+        return $hasAccess;
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        $hasAccess = in_array(self::ROLE_SUPER_ADMIN, $this->getRoles());
+        return $hasAccess;
     }
 }

@@ -45,7 +45,7 @@ class Movie
     private $imagePath;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Actor::class, inversedBy="movies")
+     * @ORM\ManyToMany(targetEntity=Actor::class, inversedBy="dashboard")
      */
     private $actors;
 

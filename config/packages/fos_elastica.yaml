@@ -1,0 +1,20 @@
+# Read the documentation: https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/doc/setup.md
+fos_elastica:
+    clients:
+        default: { url: '10.2.0.21:9201' }
+    indexes:
+        distributor:
+            settings:
+                index:
+                    analysis:
+                        analyzer:
+                            my_analyzer:
+                                type: snowball
+                                language: English
+            persistence:
+                driver: orm
+                model: App\FrontZr\DBBundle\Entity\Distributor
+                provider: ~
+                finder: ~
+            properties:
+                designation: { boost: 10, analyzer: my_analyzer }

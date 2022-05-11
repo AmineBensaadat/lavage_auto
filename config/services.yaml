@@ -13,6 +13,25 @@ services:
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
+
+    # App\Controller\AdvancedSearchingExample:
+    #     tags: ['controller.service_arguments']
+    #     public: true
+    #     arguments:
+    #         - '@fos_elastica.finder.distributor'
+    #     autowire: true
+
+    App\Controller\SearchingwithFinder:
+        tags: ['controller.service_arguments']
+        public: true
+        arguments:
+            - '@fos_elastica.finder.distributor'
+    
+    # FOS\ElasticaBundle\Finder\PaginatedFinderInterface:
+    #     tags: ['controller.service_arguments']
+    #     public: true
+    #     autowire: true
+
     App\:
         resource: '../src/'
         exclude:

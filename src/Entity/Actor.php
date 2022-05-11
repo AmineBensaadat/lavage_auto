@@ -27,11 +27,11 @@ class Actor
     /**
      * @ORM\ManyToMany(targetEntity=Movie::class, mappedBy="actors")
      */
-    private $movies;
+    private $dashboard;
 
     public function __construct()
     {
-        $this->movies = new ArrayCollection();
+        $this->dashboard = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -54,15 +54,15 @@ class Actor
     /**
      * @return Collection|Movie[]
      */
-    public function getMovies(): Collection
+    public function getdashboard(): Collection
     {
-        return $this->movies;
+        return $this->dashboard;
     }
 
     public function addMovie(Movie $movie): self
     {
-        if (!$this->movies->contains($movie)) {
-            $this->movies[] = $movie;
+        if (!$this->dashboard->contains($movie)) {
+            $this->dashboard[] = $movie;
             $movie->addActor($this);
         }
 
@@ -71,7 +71,7 @@ class Actor
 
     public function removeMovie(Movie $movie): self
     {
-        if ($this->movies->removeElement($movie)) {
+        if ($this->dashboard->removeElement($movie)) {
             $movie->removeActor($this);
         }
 
