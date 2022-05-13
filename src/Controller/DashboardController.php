@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Admin;
 use App\Entity\Movie;
+use App\Entity\Order;
 use App\Form\MovieFormType;
+use App\Form\OrderType;
 use App\Repository\MovieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,15 +30,29 @@ class DashboardController extends AbstractController
     public function index(): Response
     {
         $dashboard = $this->movieRepository->findAll();
+        $order = new Order();
+        $order_form = $this->createForm(OrderType::class, $order, ['attr' => ['id' => 'order_form']]);
+     
         $user = $this->getUser();
         $roles = $user->getRoles();
         $chekisadmin = $user->isSuperAdmin();
+     
         // dump($user, $roles, $chekisadmin);
         // die;
-        return $this->render('dashboard/index.html.twig', [
+        return $this->renderForm('dashboard/index.html.twig', [
             'dashboard' => $dashboard,
-            'last_username' => "dd"
+            'order_form' => $order_form
         ]);
+    }
+
+    public function saveOrder(Request $request): Response {
+        $order = new Order();
+        $order_form = $this->createForm(OrderType::class, $order);
+        $order_form->handleRequest($request);
+
+        if ($order_form->isSubmitted() && $order_form->isValid()) {
+           // set the data
+        }
     }
 
     #[Route('/dashboard/create', name: 'create_movie')]

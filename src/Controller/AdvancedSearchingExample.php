@@ -26,10 +26,13 @@ class AdvancedSearchingExample extends AbstractController
     #[Route('/AdvancedSearchingExample', name: 'app_AdvancedSearchingExample')]
     public function index(Request $request): Response
     {
+        $dist = $this->container->get('fos_elastica.finder.app.distributor');
+        dump($dist);
+        die;
         // Option 1. Returns all users who have example.net in any of their mapped fields
-        $results = $this->finder->find('p');
+        //$results = $this->finder->find('p');
 
-        dump($results);die;
+        //dump($results);die;
         $finder = $this->finder; //$this->container->get('fos_elastica.finder.app.distributor');
         // dump($finder);
         // die;
