@@ -12,4 +12,5 @@ return [
     FOS\ElasticaBundle\FOSElasticaBundle::class => ['all' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
     App\assetsBundle\assetsBundle::class => ['all' => true],
+    Knp\Bundle\SnappyBundle\KnpSnappyBundle::class => ['all' => true],
 ];

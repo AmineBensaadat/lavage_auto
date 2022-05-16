@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Knp\Snappy\Pdf;
 
 class DashboardController extends AbstractController
 {
@@ -26,11 +28,12 @@ class DashboardController extends AbstractController
      * @var string
      */
     protected $baseUrl;
-    public function __construct(EntityManagerInterface $em, MovieRepository $movieRepository, RequestStack $requestStack) 
+    public function __construct(Pdf $pdf, EntityManagerInterface $em, MovieRepository $movieRepository, RequestStack $requestStack) 
     {
         $this->em = $em;
         $this->movieRepository = $movieRepository;
         $this->baseUrl = $requestStack->getCurrentRequest()->getSchemeAndHttpHost();
+        $this->pdf = $pdf;
     }
 
     #[Route('/dashboard', name: 'dashboard')]
@@ -62,13 +65,18 @@ class DashboardController extends AbstractController
       
         $order_form = $this->createForm(OrderType::class, $order);
         $order_form->handleRequest($request);
-
         if ($order_form->isSubmitted() && $order_form->isValid()) {
             // get all requests orders
-            $requests_orders = $request->request->all()["order"];
+            $order = $order_form->getData();
+            try {
+                $this->em->persist($order);
+                $this->em->flush(); 
+                $id_Inserted = $order->getId(); 
 
-            dump($requests_orders);
-            die;
+                return new Response ($id_Inserted);
+            } catch (FileException $e) {
+                return new Response($e->getMessage());
+            }
            // set the data
         }
     }
@@ -187,5 +195,18 @@ class DashboardController extends AbstractController
         if($this->getUser() == null || $this->getUser()->getId() !== $movieId) {
             return $this->redirectToRoute('dashboard');
         }
+    }
+
+    #[Route('/testPdf', name: 'testPdf')]
+    public function pdfAction()
+    {
+        // $html = $this->renderView('<h1>ttt</h1>', array(
+        //     'some'  => 15
+        // ));
+
+        return new PdfResponse(
+            $this->pdf->getOutputFromHtml('<h1>ttt</h1>'),
+            'file.pdf'
+        );
     }
 }

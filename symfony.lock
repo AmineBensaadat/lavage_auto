@@ -121,6 +121,18 @@
             "./config/packages/fos_elastica.yaml"
         ]
     },
+    "knplabs/knp-snappy": {
+        "version": "v1.4.1"
+    },
+    "knplabs/knp-snappy-bundle": {
+        "version": "1.9",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.5",
+            "ref": "c81bdcf4a9d4e7b1959071457f9608631865d381"
+        }
+    },
     "laminas/laminas-code": {
         "version": "4.5.1"
     },
@@ -277,6 +289,9 @@
     },
     "symfony/polyfill-php81": {
         "version": "v1.23.0"
+    },
+    "symfony/process": {
+        "version": "v6.0.8"
     },
     "symfony/property-access": {
         "version": "v6.0.3"

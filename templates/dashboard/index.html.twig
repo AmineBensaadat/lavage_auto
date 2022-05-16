@@ -1833,7 +1833,7 @@
 
                                 {# {{ form_end(form) }} #}
 
-                                {{ form_start(order_form, {'dat_url': 'form_person_edit'}) }}
+                                {{ form_start(order_form) }}
                                     <div class="text-center pt-3 pb-4 mb-1">
                                         <h5>Signup Your Account</h5>
                                     </div>
@@ -1869,13 +1869,30 @@
                                                         <div class="mb-3">
                                                    
                                                             {{ form_label(order_form.customer_name) }}
-                                                            {{ form_widget(order_form.customer_name, { 'id': 'ssssssss' }) }}
+                                                            {{ form_widget(order_form.customer_name, { 'id': '' }) }}
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
                                                             {{ form_label(order_form.type_id) }}
                                                             {{ form_widget(order_form.type_id) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                 <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                   
+                                                            {{ form_label(order_form.phone) }}
+                                                            {{ form_widget(order_form.phone, { 'id': '' }) }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            {{ form_label(order_form.registration_number) }}
+                                                            {{ form_widget(order_form.registration_number) }}
+                                                            {{ form_widget(order_form.status) }}
                                                         </div>
                                                     </div>
                                                 </div>
