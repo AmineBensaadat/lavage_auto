@@ -205,7 +205,13 @@ class DashboardController extends AbstractController
         // ));
 
         return new PdfResponse(
-            $this->pdf->getOutputFromHtml('<h1>ttt</h1>'),
+            $this->pdf->getOutputFromHtml('<h1>ttt</h1>', 
+            array(
+                
+                'page-height' => '10mm' ,
+                'page-width'  => '20mm' ,
+                'encoding' => 'utf-8',
+            )),
             'file.pdf'
         );
     }
