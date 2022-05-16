@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -20,10 +21,16 @@ class DashboardController extends AbstractController
 {
     private $em;
     private $movieRepository;
-    public function __construct(EntityManagerInterface $em, MovieRepository $movieRepository) 
+
+    /**
+     * @var string
+     */
+    protected $baseUrl;
+    public function __construct(EntityManagerInterface $em, MovieRepository $movieRepository, RequestStack $requestStack) 
     {
         $this->em = $em;
         $this->movieRepository = $movieRepository;
+        $this->baseUrl = $requestStack->getCurrentRequest()->getSchemeAndHttpHost();
     }
 
     #[Route('/dashboard', name: 'dashboard')]
@@ -31,7 +38,11 @@ class DashboardController extends AbstractController
     {
         $dashboard = $this->movieRepository->findAll();
         $order = new Order();
-        $order_form = $this->createForm(OrderType::class, $order, ['attr' => ['id' => 'order_form']]);
+        $order_form = $this->createForm(OrderType::class, $order, 
+        ['attr' => [
+            'id' => 'order_form',
+            'action' => $this->baseUrl.'/saveOrder'
+            ]]);
      
         $user = $this->getUser();
         $roles = $user->getRoles();
@@ -44,13 +55,20 @@ class DashboardController extends AbstractController
             'order_form' => $order_form
         ]);
     }
-
+    
+    #[Route('/saveOrder', name: 'saveOrder')]
     public function saveOrder(Request $request): Response {
         $order = new Order();
+      
         $order_form = $this->createForm(OrderType::class, $order);
         $order_form->handleRequest($request);
 
         if ($order_form->isSubmitted() && $order_form->isValid()) {
+            // get all requests orders
+            $requests_orders = $request->request->all()["order"];
+
+            dump($requests_orders);
+            die;
            // set the data
         }
     }

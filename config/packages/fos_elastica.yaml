@@ -1,20 +1,16 @@
 # Read the documentation: https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/doc/setup.md
 fos_elastica:
     clients:
-        default: { url: '10.2.0.21:9201' }
+        default: { url: '10.2.0.21:9202' }
     indexes:
-        distributor:
-            settings:
-                index:
-                    analysis:
-                        analyzer:
-                            my_analyzer:
-                                type: snowball
-                                language: English
+        oils_distributor_volume:
+            properties:
+                target: ~
+                quantity: { boost: 10, analyzer: my_analyzer }
+                tags:
+                price_liter:
             persistence:
                 driver: orm
-                model: App\FrontZr\DBBundle\Entity\Distributor
+                model: App\Entity\PdmOilsDistributorVolume
                 provider: ~
                 finder: ~
-            properties:
-                designation: { boost: 10, analyzer: my_analyzer }
